@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NÖRDA · 北欧家具展</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-cream: #faf8f4;
+            --color-warm-white: #f5f0ea;
+            --color-sand: #e8dfd4;
+            --color-wood-light: #c9b99a;
+            --color-wood: #a08c6e;
+            --color-wood-dark: #6b5b45;
+            --color-charcoal: #3d3830;
+            --color-gray: #7a7268;
+            --color-gray-light: #b5aea5;
+            --color-accent: #8b7355;
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Noto Sans SC', sans-serif;
+            --space: 8px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-cream);
+            color: var(--color-charcoal);
+            font-weight: 300;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: calc(var(--space) * 3) calc(var(--space) * 6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s, box-shadow 0.4s;
+        }
+
+        nav.scrolled {
+            background: rgba(250, 248, 244, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 var(--color-sand);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: white;
+            transition: color 0.4s;
+        }
+
+        nav.scrolled .logo {
+            color: var(--color-charcoal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: calc(var(--space) * 4);
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: color 0.3s;
+        }
+
+        nav.scrolled .nav-links a {
+            color: var(--color-gray);
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        nav.scrolled .nav-links a:hover {
+            color: var(--color-charcoal);
+        }
+
+        section {
+            padding: calc(var(--space) * 12) calc(var(--space) * 6);
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-gray-light);
+            margin-bottom: calc(var(--space) * 2);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 300;
+            color: var(--color-charcoal);
+            margin-bottom: calc(var(--space) * 4);
+            line-height: 1.2;
+        }
+
+        /* Hero with full-bleed photo */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: calc(var(--space) * 20) calc(var(--space) * 4);
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=80') center/cover no-repeat;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(30, 25, 20, 0.3) 0%,
+                rgba(30, 25, 20, 0.15) 40%,
+                rgba(30, 25, 20, 0.4) 100%
+            );
+        }
+
+        .hero > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tagline {
+            font-size: 0.8rem;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: calc(var(--space) * 4);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 300;
+            line-height: 1.05;
+            color: white;
+            margin-bottom: calc(var(--space) * 3);
+            text-shadow: 0 2px 40px rgba(0,0,0,0.15);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 500px;
+            margin-bottom: calc(var(--space) * 6);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: calc(var(--space) * 6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            z-index: 1;
+        }
+
+        .hero-scroll .line {
+            width: 1px;
+            height: 40px;
+            background: rgba(255,255,255,0.5);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 0.5; }
+            50% { transform: scaleY(1.3); opacity: 1; }
+        }
+
+        /* Products */
+        .products {
+            background: var(--color-cream);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: calc(var(--space) * 14);
+            padding-bottom: calc(var(--space) * 14);
+        }
+
+        .products-header {
+            text-align: center;
+            margin-bottom: calc(var(--space) * 10);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(var(--space) * 5);
+        }
+
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: 2px;
+            margin-bottom: calc(var(--space) * 2.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), filter 0.6s ease;
+            filter: saturate(0.85) contrast(1.05);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.03);
+            filter: saturate(1) contrast(1);
+        }
+
+        .product-name {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: calc(var(--space) * 0.5);
+        }
+
+        .product-desc {
+            font-size: 0.85rem;
+            color: var(--color-gray);
+            margin-bottom: var(--space);
+        }
+
+        .product-price {
+            font-size: 0.9rem;
+            color: var(--color-wood-dark);
+            font-weight: 400;
+        }
+
+        /* Editorial break image */
+        .editorial-break {
+            width: 100%;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editorial-break img {
+            width: 100%;
+            height: 50vh;
+            object-fit: cover;
+            filter: saturate(0.8) contrast(1.05);
+        }
+
+        /* Philosophy */
+        .philosophy {
+            background: var(--color-warm-white);
+            padding: calc(var(--space) * 16) calc(var(--space) * 4);
+        }
+
+        .philosophy-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: calc(var(--space) * 8);
+            align-items: center;
+        }
+
+        .philosophy-image {
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .philosophy-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            filter: saturate(0.8) contrast(1.05);
+        }
+
+        .philosophy-content {
+            max-width: 500px;
+        }
+
+        .philosophy-text {
+            font-size: 1.05rem;
+            color: var(--color-gray);
+            line-height: 2;
+            margin-bottom: calc(var(--space) * 4);
+        }
+
+        .philosophy-values {
+            display: flex;
+            gap: calc(var(--space) * 6);
+            margin-top: calc(var(--space) * 6);
+            flex-wrap: wrap;
+        }
+
+        .value-item {
+            text-align: left;
+        }
+
+        .value-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--color-wood);
+            margin-bottom: var(--space);
+        }
+
+        .value-label {
+            font-size: 0.8rem;
+            color: var(--color-gray);
+            letter-spacing: 0.1em;
+        }
+
+        /* Materials */
+        .materials {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: calc(var(--space) * 14) calc(var(--space) * 6);
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: calc(var(--space) * 3);
+            margin-top: calc(var(--space) * 6);
+        }
+
+        .material-card {
+            border-radius: 2px;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+
+        .material-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .material-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .material-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.8);
+            transition: transform 0.5s ease;
+        }
+
+        .material-card:hover .material-image img {
+            transform: scale(1.05);
+        }
+
+        .material-info {
+            padding: calc(var(--space) * 3);
+            background: var(--color-warm-white);
+        }
+
+        .material-name {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: var(--space);
+        }
+
+        .material-desc {
+            font-size: 0.82rem;
+            color: var(--color-gray);
+            line-height: 1.7;
+        }
+
+        /* Form Section */
+        .inquiry {
+            background: var(--color-charcoal);
+            color: var(--color-cream);
+            padding: calc(var(--space) * 14) calc(var(--space) * 6);
+        }
+
+        .inquiry .section-label {
+            color: var(--color-wood-light);
+        }
+
+        .inquiry .section-title {
+            color: var(--color-cream);
+        }
+
+        .form-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .form-intro {
+            color: var(--color-gray-light);
+            margin-bottom: calc(var(--space) * 6);
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: calc(var(--space) * 3);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--space) * 0.8);
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            color: var(--color-gray-light);
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 2px;
+            padding: calc(var(--space) * 1.5) calc(var(--space) * 2);
+            color: var(--color-cream);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 300;
+            transition: border-color 0.3s, background 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--color-wood-light);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .form-group input.error,
+        .form-group textarea.error {
+            border-color: #c47a6a;
+        }
+
+        .form-group .error-msg {
+            font-size: 0.72rem;
+            color: #c47a6a;
+            min-height: 1rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            margin-top: calc(var(--space) * 4);
+            width: 100%;
+            padding: calc(var(--space) * 2) calc(var(--space) * 4);
+            background: var(--color-wood);
+            color: var(--color-cream);
+            border: none;
+            border-radius: 2px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: var(--color-wood-dark);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: calc(var(--space) * 6) 0;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-message h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--color-cream);
+            margin-bottom: calc(var(--space) * 2);
+        }
+
+        .success-message p {
+            color: var(--color-gray-light);
+        }
+
+        footer {
+            background: var(--color-charcoal);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: calc(var(--space) * 5) calc(var(--space) * 6);
+            text-align: center;
+            color: var(--color-gray);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: calc(var(--space) * 8) calc(var(--space) * 3);
+            }
+
+            nav {
+                padding: calc(var(--space) * 2) calc(var(--space) * 3);
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .philosophy-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .philosophy-image img {
+                height: 300px;
+            }
+
+            .philosophy-values {
+                gap: calc(var(--space) * 4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="logo">NÖRDA</div>
+        <ul class="nav-links">
+            <li><a href="#products">产品</a></li>
+            <li><a href="#philosophy">理念</a></li>
+            <li><a href="#materials">材质</a></li>
+            <li><a href="#inquiry">咨询</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-tagline">Scandinavian Design · 2026 Collection</p>
+        <h1>自然之形<br>居家之美</h1>
+        <p class="hero-subtitle">源自北欧的纯粹设计哲学，以天然材质与极简线条，构建温暖而宁静的生活空间</p>
+        <div class="hero-scroll">
+            <span>SCROLL</span>
+            <div class="line"></div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="products-header">
+            <p class="section-label">Collection</p>
+            <h2 class="section-title">精选产品</h2>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- Editorial break -->
+    <div class="editorial-break fade-in">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1600&q=80" alt="Nordic interior detail" loading="lazy">
+    </div>
+
+    <!-- Philosophy -->
+    <section class="philosophy fade-in" id="philosophy">
+        <div class="philosophy-layout">
+            <div class="philosophy-image">
+                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80" alt="Craftsmanship" loading="lazy">
+            </div>
+            <div class="philosophy-content">
+                <p class="section-label">Philosophy</p>
+                <h2 class="section-title">设计理念</h2>
+                <p class="philosophy-text">
+                    我们相信，好的设计源于对自然的尊重与对生活的理解。每一件家具都是功能与美学的平衡，是工匠精神与可持续理念的结合。我们选用经FSC认证的木材，采用传统榫卯工艺，确保每件作品经得起时间的考验。
+                </p>
+                <p class="philosophy-text">
+                    简约不是简单的删减，而是反复推敲后留下的本质。
+                </p>
+                <div class="philosophy-values">
+                    <div class="value-item">
+                        <div class="value-number">50+</div>
+                        <div class="value-label">年工艺传承</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-number">100%</div>
+                        <div class="value-label">FSC认证木材</div>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-number">25</div>
+                        <div class="value-label">年品质保证</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials -->
+    <section class="materials fade-in" id="materials">
+        <p class="section-label">Materials</p>
+        <h2 class="section-title">天然材质</h2>
+        <div class="materials-grid">
+            <div class="material-card">
+                <div class="material-image">
+                    <img src="https://images.unsplash.com/photo-1571205086863-9d186c5cb8fb?w=600&q=80" alt="White oak" loading="lazy">
+                </div>
+                <div class="material-info">
+                    <h3 class="material-name">白橡木</h3>
+                    <p class="material-desc">来自北欧森林的白橡木，纹理细腻，色泽温润。经过自然干燥处理，保留木材本身的呼吸感。</p>
+                </div>
+            </div>
+            <div class="material-card">
+                <div class="material-image">
+                    <img src="https://images.unsplash.com/photo-1709805667077-be87d682f09e?w=600&q=80" alt="Black walnut" loading="lazy">
+                </div>
+                <div class="material-info">
+                    <h3 class="material-name">黑胡桃木</h3>
+                    <p class="material-desc">深邃的色泽与优雅的纹理，随时间推移愈发温润。适用于强调质感的高端家具系列。</p>
+                </div>
+            </div>
+            <div class="material-card">
+                <div class="material-image">
+                    <img src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=600&q=80" alt="Linen" loading="lazy">
+                </div>
+                <div class="material-info">
+                    <h3 class="material-name">亚麻织物</h3>
+                    <p class="material-desc">天然亚麻纤维，透气亲肤。每一根纤维都带有自然的不规则纹理，触感柔和。</p>
+                </div>
+            </div>
+            <div class="material-card">
+                <div class="material-image">
+                    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?w=600&q=80" alt="Terrazzo" loading="lazy">
+                </div>
+                <div class="material-info">
+                    <h3 class="material-name">水磨石</h3>
+                    <p class="material-desc">手工浇筑的水磨石台面，融合天然石材碎片与环保粘合剂，每件都独一无二。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inquiry Form -->
+    <section class="inquiry" id="inquiry">
+        <div class="form-container">
+            <p class="section-label">Contact</p>
+            <h2 class="section-title">购买意向</h2>
+            <p class="form-intro">如您对我们的产品感兴趣，请填写以下信息，我们的顾问将在24小时内与您联系。</p>
+
+            <form id="intentForm" novalidate>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="customer_name">姓名（若为公司采购请写公司名）</label>
+                        <input type="text" id="customer_name" name="customer_name" required placeholder="请输入公司名称">
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_name">联系人</label>
+                        <input type="text" id="contact_name" name="contact_name" required placeholder="请输入联系人姓名">
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="请输入联系电话">
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="source">来源</label>
+                        <input type="text" id="source" name="source" placeholder="了解渠道">
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="notes">备注</label>
+                        <textarea id="notes" name="notes" placeholder="请描述您感兴趣的产品或其他需求"></textarea>
+                        <span class="error-msg"></span>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">提交意向</button>
+            </form>
+
+            <div class="success-message" id="successMsg">
+                <h3>提交成功</h3>
+                <p>感谢您的关注，我们的顾问将尽快与您联系。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NÖRDA · All Rights Reserved</p>
+    </footer>
+
+    <script>
+        const products = [
+            { name: 'Eira 休闲椅', desc: '白橡木框架 / 亚麻坐垫', price: '¥12,800', img: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80' },
+            { name: 'Fjord 餐桌', desc: '黑胡桃木 / 可延伸设计', price: '¥28,500', img: 'https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?w=600&q=80' },
+            { name: 'Saga 沙发', desc: '三人位 / 模块化组合', price: '¥35,000', img: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80' },
+            { name: 'Björk 书架', desc: '白橡木 / 五层开放式', price: '¥9,600', img: 'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=600&q=80' },
+            { name: 'Solvi 边几', desc: '水磨石台面 / 黄铜支脚', price: '¥4,200', img: 'https://images.unsplash.com/photo-1499933374294-4584851497cc?w=600&q=80' },
+            { name: 'Kvist 衣帽架', desc: '实木枝形设计 / 六挂钩', price: '¥3,800', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=600&q=80' },
+            { name: 'Dimma 床头柜', desc: '白橡木 / 单抽屉', price: '¥5,500', img: 'https://plus.unsplash.com/premium_photo-1676823570572-966ea4c0e333?w=600&q=80' },
+            { name: 'Lugn 躺椅', desc: '弯曲木技术 / 羊毛毡垫', price: '¥18,600', img: 'https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?w=600&q=80' },
+        ];
+
+        const grid = document.getElementById('productGrid');
+        products.forEach((p, i) => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.style.transitionDelay = `${i * 0.1}s`;
+            card.innerHTML = `
+                <div class="product-image">
+                    <img src="${p.img}" alt="${p.name}" loading="lazy">
+                </div>
+                <h3 class="product-name">${p.name}</h3>
+                <p class="product-desc">${p.desc}</p>
+                <p class="product-price">${p.price}</p>
+            `;
+            grid.appendChild(card);
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.product-card, .fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        const form = document.getElementById('intentForm');
+        const successMsg = document.getElementById('successMsg');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let valid = true;
+
+            const required = form.querySelectorAll('[required]');
+            required.forEach(input => {
+                const errorEl = input.parentElement.querySelector('.error-msg');
+                if (!input.value.trim()) {
+                    input.classList.add('error');
+                    errorEl.textContent = '此项为必填';
+                    valid = false;
+                } else {
+                    input.classList.remove('error');
+                    errorEl.textContent = '';
+                }
+            });
+
+            const phone = form.querySelector('#phone');
+            const phoneError = phone.parentElement.querySelector('.error-msg');
+            if (phone.value && !/^[\d\-+\s()]{7,}$/.test(phone.value)) {
+                phone.classList.add('error');
+                phoneError.textContent = '请输入有效的电话号码';
+                valid = false;
+            }
+
+            if (valid) {
+                const data = Object.fromEntries(new FormData(form));
+                console.log('Purchase intent submitted:', data);
+                form.style.display = 'none';
+                successMsg.classList.add('show');
+            }
+        });
+
+        form.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('error');
+                input.parentElement.querySelector('.error-msg').textContent = '';
+            });
+        });
+    </script>
+</body>
+</html>
